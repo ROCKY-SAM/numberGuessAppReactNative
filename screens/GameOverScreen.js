@@ -10,7 +10,9 @@ const GameOverScreen = props => {
       <TitleText>The Game is Over!</TitleText>
       <View style={styles.imageContainer}>
         <Image
-          source={require('../assets/success.png')}
+        fadeDuration={1000}
+    //      source={require('../assets/success.png')}
+          source={{uri:'https://images.unsplash.com/photo-1521033719794-41049d18b8d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'}}
           style={styles.image}
           resizeMode="cover"
         />

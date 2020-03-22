@@ -3,7 +3,9 @@ import {View,Text,StyleSheet,Button,TouchableWithoutFeedback,Keyboard,Alert} fro
 import Card from '../components/Card';
 import Colors from '../constants/color';
 import Input from '../components/Input';
+import BodyText from '../components/BodyText';
 import NumberContainer from '../components/NumberContainer';
+import TitleText from '../components/TitleText';
 const StartGameScreen = props =>{
 
 const [enteredValue,setEnteredValue] = useState(''); 
@@ -36,7 +38,7 @@ let confirmedOutput;
     if(confirmed){
     confirmedOutput = (
         <Card style={styles.summaryContainer} >
-        <Text>You selected</Text>
+        <BodyText>You selected</BodyText>
         <NumberContainer>{selectNumber}</NumberContainer>
         <Button title="Start Game" onPress={() =>props.onStartGame(selectNumber)}/>
         </Card>);
@@ -47,7 +49,7 @@ let confirmedOutput;
         <View style={styles.screen}>
             <Text style={styles.title}>Game Screen</Text>
             <Card style={styles.inputContainer}>
-                <Text>Select a Number</Text>
+                <TitleText>Select a Number</TitleText>
                 <Input style={styles.input} 
                 blurOnSubmit 
                 autoCapitalize='none' 

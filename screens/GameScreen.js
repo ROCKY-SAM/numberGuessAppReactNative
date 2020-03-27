@@ -1,11 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Alert ,ScrollView} from 'react-native';
-import {Ionicons} from '@expo/vector-icons'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  ScrollView,
+  FlatList
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
 import NumberContainer from '../components/NumberContainer';
 import Card from '../components/Card';
-import DefaultStyles from '../constants/default-styles';
 import MainButton from '../components/MainButton';
 import BodyText from '../components/BodyText';
+import DefaultStyles from '../constants/default-styles';
+
 const generateRandomBetween = (min, max, exclude) => {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -17,14 +26,22 @@ const generateRandomBetween = (min, max, exclude) => {
   }
 };
 
-const renderListItem = (value,numOfRound) =>(  <View key={value} style={styles.listItem}> 
-<BodyText>#{numOfRound}</BodyText>
-<BodyText>{value}</BodyText>
-  </View>);
+const renderListItem = (listLength, itemData) => (
+  <View style={styles.listItem}>
+    <BodyText>#{listLength - itemData.index}</BodyText>
+    <BodyText>{itemData.item}</BodyText>
+  </View>
+);
+// const renderListItem = (value,numOfRound) =>(  <View key={value} style={styles.listItem}> 
+// <BodyText>#{numOfRound}</BodyText>
+// <BodyText>{value}</BodyText>
+//   </View>);
+
 const GameScreen = props => {
-  const initialGuess =  generateRandomBetween(1, 100, props.userChoice);
+  const initialGuess = generateRandomBetween(1, 100, props.userChoice);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
-  const [pastGuesses, setpastGuesses] = useState([initialGuess]);
+  const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()]);
+    // const [pastGuesses, setpastGuesses] = useState([initialGuess]);
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
 
@@ -49,7 +66,7 @@ const GameScreen = props => {
     if (direction === 'lower') {
       currentHigh.current = currentGuess;
     } else {
-      currentLow.current = currentGuess+1;
+      currentLow.current = currentGuess + 1;
     }
     const nextNumber = generateRandomBetween(
       currentLow.current,
@@ -58,7 +75,11 @@ const GameScreen = props => {
     );
     setCurrentGuess(nextNumber);
    // setRounds(curRounds => curRounds + 1);
-   setpastGuesses(currentPastGuess =>[nextNumber,...currentPastGuess])
+  //  setpastGuesses(currentPastGuess =>[nextNumber,...currentPastGuess])
+    setPastGuesses(curPastGuesses => [
+      nextNumber.toString(),
+      ...curPastGuesses
+    ]);
   };
 
   return (
@@ -66,16 +87,24 @@ const GameScreen = props => {
       <Text style={DefaultStyles.title}>Opponent's Guess</Text>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card style={styles.buttonContainer}>
-        <MainButton onPress={nextGuessHandler.bind(this, 'lower')} ><Ionicons name="md-remove" size={24} color="white" /> </MainButton>
-        <MainButton onPress={nextGuessHandler.bind(this, 'greater')}
-        ><Ionicons name="md-add" size={24} color="white" /></MainButton>
+        <MainButton onPress={nextGuessHandler.bind(this, 'lower')}>
+          <Ionicons name="md-remove" size={24} color="white" />
+        </MainButton>
+        <MainButton onPress={nextGuessHandler.bind(this, 'greater')}>
+          <Ionicons name="md-add" size={24} color="white" />
+        </MainButton>
       </Card>
-      <View style={styles.list}>      
-        <ScrollView>
-        {pastGuesses.map((guess,index) => renderListItem(guess,pastGuesses.length-index)  )}
-      </ScrollView>
+      <View style={styles.listContainer}>
+        {/* <ScrollView contentContainerStyle={styles.list}>
+          {pastGuesses.map((guess, index) => renderListItem(guess, pastGuesses.length - index))}
+        </ScrollView> */}
+        <FlatList
+          keyExtractor={item => item}
+          data={pastGuesses}
+          renderItem={renderListItem.bind(this, pastGuesses.length)}
+          contentContainerStyle={styles.list}
+        />
       </View>
-
     </View>
   );
 };
@@ -92,17 +121,25 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 400,
     maxWidth: '90%'
-  },listItem:{
-    borderColor:"#ccc",
-    padding:15,
-    marginVertical:10,
-    backgroundColor:'white',
-    borderWidth:1,
-    flexDirection:"row",
-    justifyContent:'space-around'
-  },list:{
-    flex:1,
-    width:'80%'
+  },
+  listContainer: {
+    flex: 1,
+    width: '60%'
+  },
+  list: {
+    flexGrow: 1,
+    // alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  listItem: {
+    borderColor: '#ccc',
+    borderWidth: 1,
+    padding: 15,
+    marginVertical: 10,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%'
   }
 });
 

@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Button, Image,Dimensions ,ScrollView} from 'rea
 import BodyText from '../components/BodyText';
 import TitleText from '../components/TitleText';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+
 import MainButton from  '../components/MainButton';
 const GameOverScreen = props => {
   return (

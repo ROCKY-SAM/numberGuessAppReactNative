@@ -8,12 +8,9 @@ import Colors from '../constants/colors';
 const MainButton = props =>{
 
 let ButtonComponent = TouchableOpacity;
-
-if(Platform.OS === 'android' && Platform.Version >= 21){
+if(Platform.Version >= 21){
     ButtonComponent = TouchableWithoutFeedback;
 }
-
-
 
 return <View style={styles.buttonContainer}> <ButtonComponent activeOpacity={0.6} onPress={props.onPress}>
     <View style={styles.button}>

@@ -9,7 +9,8 @@ import {
   Dimensions
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {ScreenOrientation} from 'expo';
+import { ScreenOrientation } from 'expo';
+
 import NumberContainer from '../components/NumberContainer';
 import Card from '../components/Card';
 import MainButton from '../components/MainButton';
@@ -33,40 +34,36 @@ const renderListItem = (listLength, itemData) => (
     <BodyText>{itemData.item}</BodyText>
   </View>
 );
-// const renderListItem = (value,numOfRound) =>(  <View key={value} style={styles.listItem}> 
-// <BodyText>#{numOfRound}</BodyText>
-// <BodyText>{value}</BodyText>
-//   </View>);
 
 const GameScreen = props => {
-
-// ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
-
+  // ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
 
   const initialGuess = generateRandomBetween(1, 100, props.userChoice);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()]);
-  // const [pastGuesses, setpastGuesses] = useState([initialGuess]);
-const [availableDeviceWidth,setAvailableDeviceWidth] = useState(Dimensions.get('window').width);
-const [availableDeviceHeight,setAvailableDeviceHeight] = useState(Dimensions.get('window').height);
-
-
+  const [availableDeviceWidth, setAvailableDeviceWidth] = useState(
+    Dimensions.get('window').width
+  );
+  const [availableDeviceHeight, setAvailableDeviceHeight] = useState(
+    Dimensions.get('window').height
+  );
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
 
   const { userChoice, onGameOver } = props;
 
-useEffect(()=>{
-  const updateLayout = ()=>{
-    setAvailableDeviceWidth(Dimensions.get('window').width);
-    setAvailableDeviceHeight(Dimensions.get('window').height);
-  };
-  Dimensions.addEventListener('change',updateLayout);
+  useEffect(() => {
+    const updateLayout = () => {
+      setAvailableDeviceWidth(Dimensions.get('window').width);
+      setAvailableDeviceHeight(Dimensions.get('window').height);
+    };
 
-  return() =>{
-    Dimensions.removeEventListener('change',updateLayout);
-  };
-});
+    Dimensions.addEventListener('change', updateLayout);
+
+    return () => {
+      Dimensions.removeEventListener('change', updateLayout);
+    };
+  });
 
   useEffect(() => {
     if (currentGuess === userChoice) {
@@ -96,7 +93,6 @@ useEffect(()=>{
     );
     setCurrentGuess(nextNumber);
     // setRounds(curRounds => curRounds + 1);
-    //  setpastGuesses(currentPastGuess =>[nextNumber,...currentPastGuess])
     setPastGuesses(curPastGuesses => [
       nextNumber.toString(),
       ...curPastGuesses
@@ -104,10 +100,10 @@ useEffect(()=>{
   };
 
   let listContainerStyle = styles.listContainer;
+
   if (availableDeviceWidth < 350) {
     listContainerStyle = styles.listContainerBig;
   }
-
 
   if (availableDeviceHeight < 500) {
     return (
@@ -136,8 +132,6 @@ useEffect(()=>{
       </View>
     );
   }
-
-
 
   return (
     <View style={styles.screen}>
@@ -179,24 +173,24 @@ const styles = StyleSheet.create({
     width: 400,
     maxWidth: '90%'
   },
-  controls:{
-    flexDirection:'row',
-    justifyContent:"space-around",
-    width:'80%',
-    alignItems:'center'
+  controls: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '80%'
   },
   listContainer: {
     flex: 1,
-    width: '60%',
+    width: '60%'
   },
   listContainerBig: {
     flex: 1,
-    width: '80%',
+    width: '80%'
   },
   list: {
     flexGrow: 1,
     // alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   listItem: {
     borderColor: '#ccc',
